@@ -1,10 +1,11 @@
 package handler
 
 import(
-	"database/sql"
+	"github.com/vedantrajput-privafy/url-shortener/repository"
 )
 
-// store the database connection in Handler struct
+// store the Repository instance in the Handler struct
 type Handler struct {
-	DB *sql.DB
+	Repository *repository.URLRepository
 }
+

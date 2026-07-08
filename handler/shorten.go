@@ -25,10 +25,7 @@ func (h *Handler) ShortenHandler(w http.ResponseWriter, r *http.Request) {
 
 	shortcode := "abc123"
 
-	query := `
-		INSERT INTO urls (long_url, short_code) VALUES ($1, $2)
-	`
-	_, err = h.DB.Exec(query, req.OriginalURL, shortcode)
+	err = h.Repository.Save(req.OriginalURL, shortcode)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return

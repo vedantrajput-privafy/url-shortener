@@ -5,18 +5,20 @@ import(
 	"net/http"
 	"github.com/vedantrajput-privafy/url-shortener/handler"
 	"github.com/vedantrajput-privafy/url-shortener/database"
+	"github.com/vedantrajput-privafy/url-shortener/repository"
 )
 
 func main(){
-
+	
 	db,err := database.Connect()
 	if err != nil{
 		panic(err)
 	}
 	defer db.Close()
-
+	
+	repo := repository.NewURLRepository(db)
 	h:= &handler.Handler{
-		DB : db,
+		Repository: repo,
 	}
 
 	http.HandleFunc("/", h.WelcomeHandler)
