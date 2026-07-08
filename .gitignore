@@ -1,0 +1,18 @@
+# Binaries
+url-shortener
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go test
+*.test
+*.out
+
+# IDE
+.vscode/
+.idea/
+
+# Environment files
+.env
