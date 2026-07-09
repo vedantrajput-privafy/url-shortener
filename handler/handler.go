@@ -1,6 +1,6 @@
 package handler
 
-import(
+import (
 	"github.com/vedantrajput-privafy/url-shortener/repository"
 )
 
@@ -8,4 +8,3 @@ import(
 type Handler struct {
 	Repository *repository.URLRepository
 }
-
