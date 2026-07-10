@@ -16,22 +16,36 @@ func NewURLRepository(db *sql.DB) *URLRepository {
 	}
 }
 
-func (r *URLRepository) Save(longURL, shortCode string) error {
-	query := `INSERT INTO urls (long_url,short_code) VALUES ($1,$2)`
-	_, err := r.DB.Exec(query, longURL, shortCode)
-	return err
+func (r *URLRepository) Save(longURL string) (int64, error) {
+	query := `
+		INSERT INTO urls (long_url)
+		VALUES ($1)
+		RETURNING id
+	`
+
+	var id int64
+
+	err := r.DB.QueryRow(query, longURL).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
-func (r *URLRepository) Exists(shortcode string) (bool, error) {
-	var exists bool
-	query := `SELECT EXISTS(
-		SELECT 1 
+func (r *URLRepository) GetByID(id int64) (string, error) {
+	query := `
+		SELECT long_url
 		FROM urls
-		WHERE short_code = $1
-	)`
-	err := r.DB.QueryRow(query, shortcode).Scan(&exists)
+		WHERE id = $1
+	`
+
+	var url string
+	
+	err := r.DB.QueryRow(query, id).Scan(&url)
 	if err != nil {
-		return false, err
+		return "", err
 	}
-	return exists, nil
+
+	return url, nil
 }
